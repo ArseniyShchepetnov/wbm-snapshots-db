@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Arseniy Shchepetnov <a.shchepetnov@gmail.com>"]
 readme = "README.md"
-packages = [{include = "wbm_snapshots"}]
+packages = [{include = "wbm_snapshot"}]
 
 [tool.poetry.dependencies]
 python = "^3.7.2"
