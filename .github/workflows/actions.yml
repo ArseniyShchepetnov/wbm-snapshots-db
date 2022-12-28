@@ -32,7 +32,9 @@ jobs:
       - name: Lint tests with mypy
         run: |
           poetry run mypy tests
+
       - name: Test with pytest
+        with: mongodb-version: 4.2
         run: |
-          sudo systemctl start mongod
+          sudo systemctl start mongodb
           poetry run pytest . --cov=tests --cov-fail-under=90  --cov-report=term-missing
