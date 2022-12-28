@@ -4,10 +4,11 @@ from typing import List
 import pytest
 from wbm_snapshot.db.client import DbClient, SnapshotCollectionClient
 from wbm_snapshot.snapshot import Snapshot, SnapshotData
+# pylint: disable: redefined-outer-name
 
 
-@pytest.fixture(autouse=True)
-def client():
+@pytest.fixture(autouse=True, name="client")
+def get_client():
     """Create and finally drop collection."""
     database = DbClient(connection='mongodb://localhost',
                         database='pytest_test')
@@ -32,8 +33,8 @@ def generate_snapshots(num: int):
     return snapshots_list
 
 
-@pytest.fixture
-def snapshots():
+@pytest.fixture(name="snapshots")
+def get_snapshots():
     """Fixture to generate snapshots."""
     return generate_snapshots(3)
 
