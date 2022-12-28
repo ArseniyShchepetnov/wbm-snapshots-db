@@ -16,7 +16,7 @@ jobs:
         run: pipx install poetry
       - uses: actions/setup-python@v3
         with:
-          python-version: "3.8"
+          python-version: "3.7"
           cache: "poetry"
       - run: poetry install
 
@@ -32,6 +32,9 @@ jobs:
       - name: Lint tests with mypy
         run: |
           poetry run mypy tests
+
       - name: Test with pytest
+        with: mongodb-version: 4.2
         run: |
+          sudo systemctl start mongodb
           poetry run pytest . --cov=tests --cov-fail-under=90  --cov-report=term-missing
