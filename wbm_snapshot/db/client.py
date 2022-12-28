@@ -200,10 +200,10 @@ class SnapshotCollectionClient:
         has_similar = False
         if unique:
             similar_snapshots = self.find_similar_cursor(snapshot)
-            has_similar = similar_snapshots.count() > 0
+            n_items_found = len(list(similar_snapshots))
+            has_similar = n_items_found > 0
 
-            logger.debug("Found similar snapshots: %d",
-                         similar_snapshots.count())
+            logger.debug("Found similar snapshots: %d", n_items_found)
 
         if not has_similar:
             data = snapshot.data_dict()
