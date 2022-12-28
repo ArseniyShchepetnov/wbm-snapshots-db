@@ -49,8 +49,8 @@ def test_insert_snapshots(client: SnapshotCollectionClient,
     for item in snapshots:
         result = client.find_field('title', item.data.title)
 
-        assert result.count() == 1, \
-            f"Results count {result.count()} != 1"
+        assert len(list(result)) == 1, \
+            f"Results count {len(list(result))} != 1"
 
 
 def test_insert_duplicated_snapshots(client: SnapshotCollectionClient,
@@ -64,5 +64,5 @@ def test_insert_duplicated_snapshots(client: SnapshotCollectionClient,
     for item in snapshots:
         result = client.find_field('title', item.data.title)
 
-        assert result.count() == 1, \
-            f"Results count {result.count()} != 1"
+        assert len(list(result)) == 1, \
+            f"Results count {len(list(result))} != 1"
