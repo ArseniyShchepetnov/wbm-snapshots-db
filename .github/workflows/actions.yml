@@ -40,5 +40,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          sudo systemctl start mongodb
           poetry run pytest . --cov=tests --cov-fail-under=90  --cov-report=term-missing
