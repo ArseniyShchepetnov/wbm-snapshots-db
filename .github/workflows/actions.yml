@@ -34,7 +34,8 @@ jobs:
           poetry run mypy tests
 
       - name: Test with pytest
-        with: mongodb-version: 4.2
+        with:
+          mongodb-version: 4.2
         run: |
           sudo systemctl start mongodb
           poetry run pytest . --cov=tests --cov-fail-under=90  --cov-report=term-missing
