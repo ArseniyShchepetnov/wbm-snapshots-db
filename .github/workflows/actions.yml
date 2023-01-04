@@ -20,6 +20,11 @@ jobs:
           cache: "poetry"
       - run: poetry install
 
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: 4.2
+
       - name: Lint with pylint
         run: |
           poetry run pylint wbm_snapshot --fail-under=10
@@ -34,7 +39,5 @@ jobs:
           poetry run mypy tests
 
       - name: Test with pytest
-        with: mongodb-version: 4.2
         run: |
-          sudo systemctl start mongodb
           poetry run pytest . --cov=tests --cov-fail-under=90  --cov-report=term-missing
