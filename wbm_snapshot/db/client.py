@@ -229,3 +229,36 @@ class SnapshotCollectionClient:
             id_ = ObjectId(id_)
         cursor = self._collection.find({"_id": id_})
         return self.cursor2snapshots(cursor)
+
+    def filter_multiple_array(self, array: List[str], field: str) -> List[str]:
+        """Filter multiple urls which in database."""
+        result = self.collection.aggregate(
+            [
+                {"$match": {field: {"$in": array}}},
+                {"$project": {field: 1, "_id": 0}},
+                {
+                    "$group": {
+                        "_id": "null",
+                        field: {
+                            "$push": f"${field}"
+                        }
+                    }
+                },
+                {
+                    "$project": {
+                        "result": {
+                            "$filter": {
+                                "input": array,
+                                "as": "item",
+                                "cond": {
+                                    "$not": {"$in": ["$$item", f"${field}"]}
+                                }
+                            }
+                        }
+                    }
+                }
+
+            ]
+        )
+        items = list(result)[0]["result"]
+        return items

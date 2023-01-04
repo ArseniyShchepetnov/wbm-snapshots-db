@@ -29,7 +29,6 @@ def generate_snapshots(num: int):
         )
         for index in range(num)
     ]
-
     return snapshots_list
 
 
@@ -66,3 +65,14 @@ def test_insert_duplicated_snapshots(client: SnapshotCollectionClient,
 
         assert len(list(result)) == 1, \
             f"Results count {len(list(result))} != 1"
+
+
+def test_filter_multiple_array(client: SnapshotCollectionClient,
+                               snapshots: List[Snapshot]):
+    """Test filter array."""
+    for item in snapshots:
+        client.insert(item)
+    titles = ["title 0", "unknown"]
+    result = client.filter_multiple_array(titles, "title")
+    assert len(result) == 1
+    assert result[0] == "unknown"
