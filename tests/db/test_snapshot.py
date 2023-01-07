@@ -72,7 +72,17 @@ def test_filter_multiple_array(client: SnapshotCollectionClient,
     """Test filter array."""
     for item in snapshots:
         client.insert(item)
-    titles = ["title 0", "unknown"]
+
+    titles = ["title 0", "title 1", "unknown"]
     result = client.filter_multiple_array(titles, "title")
     assert len(result) == 1
     assert result[0] == "unknown"
+
+    titles = ["unknown 1", "unknown 2"]
+    result = client.filter_multiple_array(titles, "title")
+    assert len(result) == 2, "result={result}"
+    assert result == titles
+
+    titles = ["title 0", "title 1"]
+    result = client.filter_multiple_array(titles, "title")
+    assert len(result) == 0, "result={result}"
