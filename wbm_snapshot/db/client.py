@@ -232,10 +232,10 @@ class SnapshotCollectionClient:
 
     def filter_multiple_array(self, array: List[str], field: str) -> List[str]:
         """Filter multiple urls which in database."""
-        result = self.collection.aggregate(
+        difference = self.collection.aggregate(
             [
-                {"$match": {field: {"$in": array}}},
                 {"$project": {field: 1, "_id": 0}},
+                {"$match": {field: {"$in": array}}},
                 {
                     "$group": {
                         "_id": "null",
@@ -244,6 +244,7 @@ class SnapshotCollectionClient:
                         }
                     }
                 },
+                {"$project": {field: 1, "_id": 0}},
                 {
                     "$project": {
                         "result": {
@@ -257,8 +258,11 @@ class SnapshotCollectionClient:
                         }
                     }
                 }
-
             ]
         )
-        items = list(result)[0]["result"]
-        return items
+        list_them = list(difference)
+        if len(list_them) > 0:
+            result = list_them[0]["result"]
+        else:
+            result = array
+        return result
